@@ -124,12 +124,12 @@ function displayInfo(geoData) {
     //    const time = now.get
     // 
     // extract pincode
-    const pin_code = geoData.zip;
+    const pin_code = geoData.postal;
     console.log(pin_code);
 
     time_zone.textContent = timezone.split(',')[1];
     date_time.textContent = ` ${date} ${formattedTime}`;
-    pincode.textContent = ` ${geoData.zip}` || ' Not available';
+    pincode.textContent = ` ${geoData.postal}` || ' Not available';
 
     getPincodes(geoData);
 }
@@ -137,7 +137,7 @@ function displayInfo(geoData) {
 // Step - 4 --> get po from pincode
 async function getPincodes(geoData) {
     const message = document.getElementById('no-of-po-found');
-    const pincodeInfoResponse = await fetch(`https://api.postalpincode.in/pincode/${geoData.zip}`);
+    const pincodeInfoResponse = await fetch(`https://api.postalpincode.in/pincode/${geoData.postal}`);
     const pincodeInfoData = await pincodeInfoResponse.json();
     console.log(pincodeInfoData);
     message.textContent = `Number of pincode(s) found: ${pincodeInfoData[0].PostOffice.length}`;
