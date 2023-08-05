@@ -7,13 +7,14 @@ window.addEventListener('DOMContentLoaded', async () => {
     const ipAddressElement = document.getElementById('co-ordinates');
 
     try {
-        const response = await fetch("https://ipinfo.io/157.45.68.146?token=10aba4bc147929");
+        const response = await fetch("https://api.ipify.org?format=json");
         const data = await response.json();
         // user_data.postal = data.ip;
+      
         ipAddressElement.textContent = data.ip;
         // localStorage.setItem('ip', JSON.stringify(data));
 
-        console.log(data);
+        // console.log(data);
     } catch (error) {
         ipAddressElement.textContent = '127.0.01';
         console.log('Error fetching IP address:', error);
@@ -30,7 +31,7 @@ searchIPBtn.addEventListener('click', async () => {
     const ipAddressElement = document.getElementById('co-ordinates-display');
     const ipAddFields = document.getElementsByClassName('ip-add-fiels');
     const map = document.getElementsByTagName('iframe')[0];
-
+    // console.log(ipAddFields);
     const latitude = ipAddFields[0];
     const longitude = ipAddFields[1];
     const city = ipAddFields[2];
@@ -39,23 +40,26 @@ searchIPBtn.addEventListener('click', async () => {
     const hostname = ipAddFields[5];
 
     try {
-
-        const response = await fetch("https://ipinfo.io/157.45.68.146?token=10aba4bc147929");
+        const response0 = await fetch("https://api.ipify.org?format=json");
+        const data0 = await response0.json();
+        // console.log("data0",data0);
+        const response = await fetch(`https://ipinfo.io/${data0.ip}?token=10aba4bc147929`);
         const data = await response.json();
-
-        // Step 2: Fetch the geo information based on the user's IP
+        console.log("data",data);
+       
         const geoResponse = await fetch(`http://api.ipstack.com/${data.ip}?access_key=e7c237e6062bd6c622f381d13fd094af`);
         const geoData = await geoResponse.json();
-        console.log(geoData);
+        console.log("geodata",geoData);
+        
         displayInfo(geoData);
 
         // Step 3: Update the content with the geo information
-        const [lat, long] = data.loc.split(',');
+        // const [lat, long] = data.loc.split(',');
 
         ipAddressElement.textContent = geoData.ip;
-        latitude.textContent = lat;
-        longitude.textContent = long;
-        organisation.textContent = data.org;
+        latitude.textContent = geoData.latitude.toFixed(4);
+        longitude.textContent = geoData.longitude.toFixed(4);
+        organisation.textContent = data.company.name;
         city.textContent = geoData.city;
         hostname.textContent = data.hostname;
         region.textContent = geoData.region_name;
