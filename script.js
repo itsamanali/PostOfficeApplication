@@ -40,32 +40,32 @@ searchIPBtn.addEventListener('click', async () => {
     const hostname = ipAddFields[5];
 
     try {
-        const response0 = await fetch("https://api.ipify.org?format=json");
-        const data0 = await response0.json();
+        const response0 = await fetch("http://ip-api.com/json/?fields=61439");
+        const data = await response0.json();
         // console.log("data0",data0);
-        const response = await fetch(`https://ipinfo.io/${data0.ip}?token=10aba4bc147929`);
-        const data = await response.json();
-        console.log("data",data);
+        // const response = await fetch(`https://ipinfo.io/${data0.ip}?token=10aba4bc147929`);
+        // const data = await response.json();
+        // console.log("data",data);
        
-        const geoResponse = await fetch(`http://api.ipstack.com/${data.ip}?access_key=e7c237e6062bd6c622f381d13fd094af`);
-        const geoData = await geoResponse.json();
-        console.log("geodata",geoData);
+        // const geoResponse = await fetch(`http://api.ipstack.com/${data.ip}?access_key=e7c237e6062bd6c622f381d13fd094af`);
+        // const geoData = await geoResponse.json();
+        // console.log("geodata",geoData);
         
-        displayInfo(geoData);
+        displayInfo(data);
 
         // Step 3: Update the content with the geo information
         // const [lat, long] = data.loc.split(',');
 
-        ipAddressElement.textContent = geoData.ip;
-        latitude.textContent = geoData.latitude.toFixed(4);
-        longitude.textContent = geoData.longitude.toFixed(4);
-        organisation.textContent = data.company.name;
-        city.textContent = geoData.city;
-        hostname.textContent = data.hostname;
-        region.textContent = geoData.region_name;
+        ipAddressElement.textContent = data.query;
+        latitude.textContent = data.lat;
+        longitude.textContent = data.lon;
+        organisation.textContent = data.org;
+        city.textContent = data.city;
+        hostname.textContent = data.isp;
+        region.textContent = data.regionName;
 
         // show loaction on map 
-        const newSrc = `https://maps.google.com/maps?q=${geoData.latitude}, ${geoData.longitude}&z=15&output=embed`; // Replace with the desired URL
+        const newSrc = `https://maps.google.com/maps?q=${data.lat}, ${data.lon}&z=15&output=embed`; // Replace with the desired URL
         map.src=newSrc;
         // console.log(geoData.latitude);
         // console.log(geoData.longitude);
